@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    volumes:
+      - minio-data:/data
+    environment:
+      - MINIO_ROOT_USER=my_root_user
+      - MINIO_ROOT_PASSWORD=my_root_password
+    ports:
+      - "9002:9000"
+      - "44187:44187"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+  app:
+    build:
+      context: ./app/
+    image: bud/audio2audio
+    restart: always
+    volumes:
+      - ./.cache:/root/.cache/
+    ports:
+      - "5001:5001"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+volumes:
+  minio-data:

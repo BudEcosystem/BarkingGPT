@@ -1,0 +1,5 @@
+.cache
+.vscode
+audio2audio/
+__pycache__
+*.wav

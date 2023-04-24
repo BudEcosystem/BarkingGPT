@@ -1,0 +1,1 @@
+-> Record Audio -> Convert To Text -> Responce Back To Frontend -> Calls The Open AI

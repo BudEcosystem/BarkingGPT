@@ -1,0 +1,5 @@
+AWS_S3_ACCESS_KEY="my_root_user"
+AWS_S3_SECRET_KEY="my_root_password"
+AWS_S3_BUCKET="audio2audio"
+AWS_S3_PATH="audio/"
+AWS_S3_BASE_URL="http://minio:9000"
