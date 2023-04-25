@@ -7,18 +7,6 @@ import nltk
 
 def generate(text_prompt,filename):
 
-
-    # words = text_prompt.split()
-    # # Initialize an empty list to store the 10-word strings
-    # text_prompts = []
-    
-    # # Loop through the list of words and add every 10 words to a new string
-    # for sentence in words:
-    #     # Append the sentence to the text_prompts list if it's not empty
-    #     if sentence:
-    #         text_prompts.append(sentence + ".")
-        
-    # Set up history prompt
     history_prompt = "en_speaker_3"
     
     sentences = nltk.sent_tokenize(text_prompt)
@@ -41,16 +29,6 @@ def generate(text_prompt,filename):
 
     # Combine the audio files
     combined_audio = np.concatenate(audio_arrays)
-    # text_prompt = """
-    #      Hello, my name is Suno. And, uh — and I like pizza. [laughs]
-    #      But I also have other interests such as playing tic tac toe.
-    # """
-    #audio_array = generate_audio(text=text_prompt,history_prompt="en_speaker_1")
-    #audio_obj = Audio(audio_array, rate=SAMPLE_RATE)
-    # print(audio_obj)
+    
     write_wav(filename, SAMPLE_RATE, combined_audio)
     return True
-
-
-# if __name__ == "__main__":
-#     generate("hello how are you","test.wav")
