@@ -98,14 +98,11 @@ const App = ({ classes }) => {
     }
 
     function transcribeRecording(recordedBlob) {
-
-        console.log("hell", transcribedData);
         const temp = transcribedData;
 
         const headers = {
             "content-type": "multipart/form-data",
         };
-
 
         const formData = new FormData();
         formData.append("language", selectedLangRef.current)

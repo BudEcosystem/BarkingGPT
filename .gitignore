@@ -3,3 +3,6 @@
 audio2audio/
 __pycache__
 *.wav
+venv
+ui/node_modules
+node_modules
