@@ -28,27 +28,35 @@ def serve_file(filename: str) -> str:
 @app.route("/chat", methods=["POST"])
 def speech_to_text() -> dict:
     logging.info("Speech To Text")
+    try:
     # Create Temp file
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-        save_path = f.name
-        wav_file = request.files["audio_data"]
-        wav_file.save(save_path)
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+            save_path = f.name
+            wav_file = request.files["audio_data"]
+            wav_file.save(save_path)
+            
+            logging.debug("Temp Audio Saved")
 
-        response_text = transcribe(save_path)
-        res = call_open_api(response_text)
+            response_text = transcribe(save_path)
+            res = call_open_api(response_text)
+            
+            logging.debug("Response Test")
+            logging.debug(response_text)
 
-        # Conver Text To Speech
-        if not os.path.isdir(app.config["AUDIO_FILES_DIR"]):
-            os.makedirs(app.config["AUDIO_FILES_DIR"])
+            # Conver Text To Speech
+            if not os.path.isdir(app.config["AUDIO_FILES_DIR"]):
+                os.makedirs(app.config["AUDIO_FILES_DIR"])
 
-        file_name = f"{get_uuid()}.wav"
-        file_path = os.path.join(app.config["AUDIO_FILES_DIR"], file_name)
-        generate(res, file_path)
+            file_name = f"{get_uuid()}.wav"
+            file_path = os.path.join(app.config["AUDIO_FILES_DIR"], file_name)
+            generate(res, file_path)
 
-    return {
-        "text": res,
-        "audio": f"http://localhost:5001{flask.url_for('serve_file', filename=file_name, _external=False)}",
-    }
+            return {
+                "text": res,
+                "audio": f"http://localhost:5001{flask.url_for('serve_file', filename=file_name, _external=False)}",
+            }
+    except:
+        print("Something else went wrong")
 
 
 @app.route("/text-speech", methods=["POST"])

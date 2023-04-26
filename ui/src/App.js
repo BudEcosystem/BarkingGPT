@@ -42,7 +42,7 @@ const App = ({ classes }) => {
     const [isTranscribing, setIsTranscribing] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState('english');
     const [selectedModel, setSelectedModel] = useState(1);
-    const [transcribeTimeout, setTranscribeTimout] = useState(8);
+    const [transcribeTimeout, setTranscribeTimout] = useState(5);
     const [stopTranscriptionSession, setStopTranscriptionSession] = useState(false);
 
     const intervalRef = useRef(null);
@@ -88,6 +88,9 @@ const App = ({ classes }) => {
     }
 
     function onStop(recordedBlob) {
+        if (isTranscribing) return
+        if(recordedBlob.blob.size < 1) return;
+        setIsRecording(false)
         transcribeRecording(recordedBlob)
         setIsTranscribing(true)
     }
@@ -98,6 +101,12 @@ const App = ({ classes }) => {
     }
 
     function transcribeRecording(recordedBlob) {
+
+        if (isTranscribing) return
+        if(recordedBlob.blob.size < 1) return;
+
+        setIsRecording(false)
+
         const temp = transcribedData;
 
         const headers = {
@@ -113,8 +122,18 @@ const App = ({ classes }) => {
                 temp.push(res.data);
                 setTranscribedData(temp)
                 setIsTranscribing(false)
-                intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
+                //intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
             });
+
+        // if (!stopTranscriptionSessionRef.current) {
+        //     setIsRecording(true)
+        // }
+    }
+
+    function playbackEnded(e){
+        setIsTranscribing(false)
+        clearInterval(intervalRef.current);
+        intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
 
         if (!stopTranscriptionSessionRef.current) {
             setIsRecording(true)
@@ -131,32 +150,32 @@ const App = ({ classes }) => {
 
             <div className="recordIllustration">
                 <ReactMic record={isRecording} className="sound-wave" onStop={onStop}
-                    onData={onData} strokeColor="#0d6efd" backgroundColor="#f6f6ef" />
+                    onData={onData} strokeColor="#fff" backgroundColor="#0e0e0e" />
             </div>
 
             <div className={classes.buttonsSection} >
-                {!isRecording && !isTranscribing && <Button onClick={startRecording} variant="primary">Start Chat</Button>}
+                {!isRecording && !isTranscribing && <Button onClick={startRecording} variant="primary">Start</Button>}
                 {(isRecording || isTranscribing) && <Button onClick={stopRecording} variant="danger" disabled={stopTranscriptionSessionRef.current}>Stop</Button>}
             </div>
 
             <div>
-
-
-
-
-                <PulseLoader sizeUnit={"px"} size={20} color="purple" loading={isTranscribing} />
+                {
+                    isTranscribing ? "thinking...": ""
+                }
             </div>
             <div>
                 {
                     transcribedData && transcribedData.map((item, index) =>
 
-                    (<>
+                    (<div className="chat">
                         <p>{item.text}</p>
                         <ReactAudioPlayer
                             src={item.audio}
                             autoPlay={true}
+                            controls={true}
+                            onEnded={(e)=> playbackEnded(e)}
                         />
-                    </>)
+                    </div>)
 
                     )
                 }

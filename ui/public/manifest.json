@@ -1,6 +1,6 @@
 {
-  "short_name": "Whisper Playground",
-  "name": "Whisper Playground",
+  "short_name": "BarkingGPT",
+  "name": "BarkingGPT",
   "icons": [],
   "start_url": ".",
   "display": "standalone",

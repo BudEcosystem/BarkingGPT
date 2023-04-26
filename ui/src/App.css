@@ -8,8 +8,20 @@ body {
 
 #root {
     height: 100vh;
-    background-color: #f6f6ef;
+    background-color: #0e0e0e;
     display: flex;
     flex-direction: row;
+    color: #fff;
+    overflow: scroll;
 }
 
+.chat{
+    border: 1px solid #252525;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    text-align: left;
+    margin-bottom: 5px; 
+}
