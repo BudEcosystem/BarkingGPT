@@ -9,6 +9,10 @@ python -m venv venv
 source venv/bin/activate
 ```
 
+### Update config.py file with OpenAI Key
+
+`OPENAI_API_KEY=""`
+
 ### Setup Backend
 
 ```
