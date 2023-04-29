@@ -57,9 +57,5 @@ yarn run
 ## Hardware Specs & Results
 
 - 4 x 80 A100
-- Processing time
-- OS
-- RAM
-- GPU Utilizations (Threads, Single Thread)
 
 
