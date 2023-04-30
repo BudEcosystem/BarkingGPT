@@ -22,6 +22,18 @@ Currently the model takes around 2.30 mins on a 4 x A100, to be able to generate
 7. Consistent music generation with Diffusion
 8. Prompt collection
 
+
+## General observations:
+1. Bark, the text-to-speech API, has a limit of 32 tokens per request. Therefore, we had to split long paragraphs into sentences with a maximum of 32 tokens, generate audio for each sentence, and then merge the audio together to create the final audio output.
+2. Non-speech sounds such as [laugh] do not work at the beginning of a sentence.
+
+## Hardware / Software Specs
+
+- **GPU:**  4 x 80 A100
+- **RAM:** 460 GB RAM
+- **CPU:** 64 vCPU
+- **OS:**  Ububtu 24
+
 ## Installation
 **Setup Environment**
 
@@ -51,11 +63,5 @@ yarn install
 yarn run
 ```
 
-**General observations:**
-- [ ] TODO
-
-## Hardware Specs & Results
-
-- 4 x 80 A100
 
 
