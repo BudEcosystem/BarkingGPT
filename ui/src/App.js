@@ -6,8 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import { ReactMic } from 'react-mic';
 import axios from "axios";
-import { PulseLoader } from "react-spinners";
+import { Comment } from  'react-loader-spinner'
 import ReactAudioPlayer from 'react-audio-player';
+
+import assistAudio from "./audios/assist.wav";
+import thinking from "./audios/think-2.wav";
 
 const useStyles = () => ({
     root: {
@@ -71,9 +74,20 @@ const App = ({ classes }) => {
     }
 
     function startRecording() {
-        setStopTranscriptionSession(false)
-        setIsRecording(true)
-        intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
+
+        const audio = new Audio(assistAudio);
+        audio.play();
+
+        const handleAudioEnded = () => {
+            setStopTranscriptionSession(false)
+            setIsRecording(true)
+
+            intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
+        };
+
+        audio.addEventListener('ended', handleAudioEnded);
+
+
     }
 
     function stopRecording() {
@@ -89,7 +103,7 @@ const App = ({ classes }) => {
 
     function onStop(recordedBlob) {
         if (isTranscribing) return
-        if(recordedBlob.blob.size < 1) return;
+        if (recordedBlob.blob.size < 1) return;
         setIsRecording(false)
         transcribeRecording(recordedBlob)
         setIsTranscribing(true)
@@ -102,8 +116,20 @@ const App = ({ classes }) => {
 
     function transcribeRecording(recordedBlob) {
 
+        const audio = new Audio(thinking);
+        audio.play();
+
+        const handleAudioEnded = () => {
+            // setStopTranscriptionSession(false)
+            // setIsRecording(true)
+
+            // intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
+        };
+
+        audio.addEventListener('ended', handleAudioEnded);
+
         if (isTranscribing) return
-        if(recordedBlob.blob.size < 1) return;
+        if (recordedBlob.blob.size < 1) return;
 
         setIsRecording(false)
 
@@ -130,7 +156,7 @@ const App = ({ classes }) => {
         // }
     }
 
-    function playbackEnded(e){
+    function playbackEnded(e) {
         setIsTranscribing(false)
         clearInterval(intervalRef.current);
         intervalRef.current = setInterval(transcribeInterim, transcribeTimeout * 1000)
@@ -160,7 +186,18 @@ const App = ({ classes }) => {
 
             <div>
                 {
-                    isTranscribing ? "thinking...": ""
+                    isTranscribing ? (
+                        <Comment
+                            visible={true}
+                            height="80"
+                            width="80"
+                            ariaLabel="comment-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="comment-wrapper"
+                            color="#000"
+                            backgroundColor="#fff"
+                            />
+                    ) : ""
                 }
             </div>
             <div>
@@ -173,7 +210,7 @@ const App = ({ classes }) => {
                             src={item.audio}
                             autoPlay={true}
                             controls={true}
-                            onEnded={(e)=> playbackEnded(e)}
+                            onEnded={(e) => playbackEnded(e)}
                         />
                     </div>)
 
