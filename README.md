@@ -7,7 +7,7 @@ Currently barkingGPT supports all the emotions bark supports, we use single shot
 
 **You can find a few of our results below:**
 
-- [ ] TODO
+![Demo](https://raw.githubusercontent.com/BudEcosystem/BarkingGPT/main/screenshot.png)
 
 Currently the model takes around 2.30 mins on a 4 x A100, to be able to generate 1.15 secs clip on a single thread. We are trying to optimise it to make it suitable for Agent like scenarios with almost real-time Q&A. 
 
